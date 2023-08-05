@@ -8,6 +8,7 @@ from src.package.Filter import AnalogFilter
 from collections import defaultdict
 from PyQt5.QtCore import QFileInfo
 from src.package.Dataline import Dataline
+from src.package.line import Line
 
 class Dataset:
     def __init__(self, filepath='', title='', origin=''):
@@ -20,6 +21,7 @@ class Dataset:
         self.type = ''
         self.origin = filepath if origin == '' else origin
         self.tf = TFunction()
+        self.line = Line()
         self.title = qfi.fileName() if title == '' else title
         self.text = self.title
         self.datalines = []
@@ -46,10 +48,14 @@ class Dataset:
                 self.tf = self.origin.tf
                 self.type = 'filter'
                 self.parse_from_filter()
-            else:
+            elif isinstance(self.origin, TFunction):
                 self.tf = self.origin
                 self.type = 'TF'
                 self.parse_from_expression()
+            else:
+                self.type = 'line'
+                self.line = self.origin
+                self.parse_from_line()
         else:
             raise ValueError
         
@@ -170,6 +176,14 @@ class Dataset:
         self.poles[0] = p
         self.suggestedXsource = 'f'
         self.suggestedYsource = 'g'
+    
+    def parse_from_line(self):
+        self.data = [{}]
+        self.data[0]['x'] = self.line.x
+        self.data[0]['y'] = self.line.y
+        self.suggestedXsource = 'x'
+        self.suggestedYsource = 'y'
+    
             
     def get_datapoints(self, xvar_name='time', yvar_name='v', case=0):
         xdata = np.real(self.data[case][xvar_name])
@@ -186,3 +200,5 @@ class Dataset:
             dl.markerstyle = 'Point'
         self.datalines.append(dl)
         return dl
+    
+    

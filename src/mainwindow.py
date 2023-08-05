@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 
 # Project modules
 from src.ui.mainwindow import Ui_MainWindow
-from src.lineGenerator import lineGeneratorWindow
+from src.lineDialog import lineDialog
 from src.package.Dataset import Dataset
 import src.package.Filter as Filter
 from src.package.Filter import AnalogFilter
@@ -108,9 +108,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.dl_color_pickerbtn.clicked.connect(self.openColorPicker)
 
+        
+        self.ld = lineDialog(self)
         self.addLine.clicked.connect(self.showlineGeneratorWidget)
-
-        self.lineGeneratorwidget = lineGeneratorWindow()
+        self.ld.createButton.clicked.connect(self.resolveLineDialog)
 
         self.respd = ResponseDialog()
         self.resp_btn.clicked.connect(self.openResponseDialog)
@@ -177,10 +178,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.compareapprox_cb.setCurrentIndexes([])
 
     def showlineGeneratorWidget(self):
-        if self.lineGeneratorwidget:
-            self.lineGeneratorwidget.show()
+        if self.ld:
+            self.ld.show()
         else:
-            self.lineGeneratorwidget = lineGeneratorWindow()
+            self.ld = lineDialog(self)
+
+    def resolveLineDialog(self):
+        # if not self.ld.validateTF():
+        #     return
+        self.ld.setLine()
+        ds = Dataset(filepath='', origin=self.ld.l, title=self.ld.getLineTitle())
+        self.addDataset(ds)
 
     def addDataset(self, ds):
         qlwt = QListWidgetItem()

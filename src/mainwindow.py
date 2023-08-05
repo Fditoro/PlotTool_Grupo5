@@ -5,6 +5,7 @@ from PyQt5.QtCore import Qt
 
 # Project modules
 from src.ui.mainwindow import Ui_MainWindow
+from src.newline import NewLineWindow
 from src.package.Dataset import Dataset
 import src.package.Filter as Filter
 from src.package.Filter import AnalogFilter
@@ -107,6 +108,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.dl_color_pickerbtn.clicked.connect(self.openColorPicker)
 
+        self.addLine.clicked.connect(self.showNewLineWidget)
+
+        self.newlinewidget = NewLineWindow()
+
         self.respd = ResponseDialog()
         self.resp_btn.clicked.connect(self.openResponseDialog)
         self.respd.accepted.connect(self.resolveResponseDialog)
@@ -170,6 +175,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.prevFilterType = Filter.LOW_PASS
         self.compareapprox_cb.setCurrentIndexes([])
+
+    def showNewLineWidget(self):
+        if self.newlinewidget:
+            self.newlinewidget.show()
+        else:
+            self.newlinewidget = NewLineWindow()
 
     def addDataset(self, ds):
         qlwt = QListWidgetItem()

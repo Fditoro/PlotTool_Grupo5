@@ -4,11 +4,11 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import Qt
 
 # Project modules
-from src.ui.newline import Ui_NewLineWidget
+from src.ui.lineGenerator import Ui_lineGeneratorWidget
 
-class NewLineWindow(QWidget, Ui_NewLineWidget):
+class lineGeneratorWindow(QWidget, Ui_lineGeneratorWidget):
 
     def __init__(self):
-        super(NewLineWindow, self).__init__()
+        super(lineGeneratorWindow, self).__init__()
         self.setupUi(self)
     

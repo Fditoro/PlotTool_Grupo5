@@ -6,6 +6,7 @@ from PyQt5.QtCore import Qt
 # Project modules
 from src.ui.lineGenerator import Ui_lineGeneratorWidget
 from src.package.line import Line
+from src.package.point import Point
 
 class lineDialog(QWidget, Ui_lineGeneratorWidget):
 
@@ -14,6 +15,7 @@ class lineDialog(QWidget, Ui_lineGeneratorWidget):
         self.setupUi(self)
 
         self.l = Line()
+        self.p = Point()
         
     def setLine(self):
         fpx = self.firstPointX.value()
@@ -22,6 +24,12 @@ class lineDialog(QWidget, Ui_lineGeneratorWidget):
         spy = self.seconPointY.value()
         self.l.setXY(fpx, fpy, spx, spy)
         self.hide()
+    
+    def setPoint(self):
+        xP = self.pointX.value()
+        yP = self.pointY.value()
+        self.p.setXY(xP,yP)
+        self.hide()
 
-    def getLineTitle(self):
+    def getTitle(self):
         return self.titleEdit.text()

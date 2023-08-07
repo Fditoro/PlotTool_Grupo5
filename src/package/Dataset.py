@@ -9,6 +9,7 @@ from collections import defaultdict
 from PyQt5.QtCore import QFileInfo
 from src.package.Dataline import Dataline
 from src.package.line import Line
+from src.package.point import Point
 
 class Dataset:
     def __init__(self, filepath='', title='', origin=''):
@@ -22,6 +23,7 @@ class Dataset:
         self.origin = filepath if origin == '' else origin
         self.tf = TFunction()
         self.line = Line()
+        self.point = Point()
         self.title = qfi.fileName() if title == '' else title
         self.text = self.title
         self.datalines = []
@@ -181,6 +183,13 @@ class Dataset:
         self.data = [{}]
         self.data[0]['x'] = self.line.x
         self.data[0]['y'] = self.line.y
+        self.suggestedXsource = 'x'
+        self.suggestedYsource = 'y'
+        
+    def parse_from_point(self):
+        self.data = [{}]
+        self.data[0]['x'] = self.point.x
+        self.data[0]['y'] = self.point.y
         self.suggestedXsource = 'x'
         self.suggestedYsource = 'y'
     

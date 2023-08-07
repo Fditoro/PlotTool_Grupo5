@@ -99,8 +99,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>198</width>
-                <height>495</height>
+                <width>210</width>
+                <height>423</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -850,9 +850,9 @@
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>-248</y>
-                <width>191</width>
-                <height>560</height>
+                <y>-159</y>
+                <width>200</width>
+                <height>430</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1243,13 +1243,13 @@
                <item row="2" column="0">
                 <widget class="QGroupBox" name="groupBox_5">
                  <property name="title">
-                  <string>Add Features</string>
+                  <string>Anotations</string>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_5">
                   <item>
                    <widget class="QPushButton" name="addLine">
                     <property name="text">
-                     <string>Add Line</string>
+                     <string>Add line or point</string>
                     </property>
                    </widget>
                   </item>
@@ -1356,8 +1356,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>215</width>
-                <height>331</height>
+                <width>218</width>
+                <height>386</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1745,8 +1745,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>176</width>
-                   <height>433</height>
+                   <width>191</width>
+                   <height>374</height>
                   </rect>
                  </property>
                  <property name="sizePolicy">
@@ -2511,7 +2511,7 @@
      <x>0</x>
      <y>0</y>
      <width>1078</width>
-     <height>23</height>
+     <height>18</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuProject">

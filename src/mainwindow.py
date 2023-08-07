@@ -109,9 +109,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.dl_color_pickerbtn.clicked.connect(self.openColorPicker)
 
         
+        #Add a line or a point to graph.
         self.ld = lineDialog(self)
-        self.addLine.clicked.connect(self.showlineGeneratorWidget)
+        self.addLineOrPoint.clicked.connect(self.showlineGeneratorWidget)
         self.ld.createButton.clicked.connect(self.resolveLineDialog)
+        self.ld.createPointButton.clicked.connect(self.resolvePointDialog)
 
         self.respd = ResponseDialog()
         self.resp_btn.clicked.connect(self.openResponseDialog)
@@ -184,10 +186,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.ld = lineDialog(self)
 
     def resolveLineDialog(self):
-        # if not self.ld.validateTF():
-        #     return
+        # Detect info to add a line to graph.
         self.ld.setLine()
-        ds = Dataset(filepath='', origin=self.ld.l, title=self.ld.getLineTitle())
+        ds = Dataset(filepath='', origin=self.ld.l, title=self.ld.getTitle())
+        self.addDataset(ds)
+        
+    def resolvePointDialog(self):
+        # Detect info to add a point to graph.
+        self.ld.setLine()
+        ds = Dataset(filepath='', origin=self.ld.l, title=self.ld.getTitle())
         self.addDataset(ds)
 
     def addDataset(self, ds):

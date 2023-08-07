@@ -7,7 +7,7 @@ import traceback
 
 # This file contains a class that allows to define a line.
 
-class Line():
+class Point():
     def __init__(self, *args, normalize=False):
         self.line_object = {}
         self.eparser = ExprParser()
@@ -16,9 +16,8 @@ class Line():
         self.y = []
         
     
-    def setXY(self, firstPointX, firstPointY, secondPointX, secondPointY):
-        num = 10000
-        self.x = np.linspace(firstPointX, secondPointX, num)
-        self.y = np.linspace(firstPointY, secondPointY, num)
+    def setXY(self, xPoint, yPoint):
+        self.x = xPoint
+        self.y = yPoint
         
         

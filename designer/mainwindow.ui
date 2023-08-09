@@ -551,7 +551,7 @@
                      <double>0.100000000000000</double>
                     </property>
                     <property name="maximum">
-                     <double>20.000000000000000</double>
+                     <double>1000.000000000000000</double>
                     </property>
                     <property name="singleStep">
                      <double>0.100000000000000</double>
@@ -850,7 +850,7 @@
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>-126</y>
+                <y>0</y>
                 <width>200</width>
                 <height>430</height>
                </rect>
@@ -1356,8 +1356,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>218</width>
-                <height>386</height>
+                <width>98</width>
+                <height>266</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1745,7 +1745,7 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>191</width>
+                   <width>98</width>
                    <height>374</height>
                   </rect>
                  </property>

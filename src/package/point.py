@@ -17,7 +17,7 @@ class Point():
         
     
     def setXY(self, xPoint, yPoint):
-        self.x = xPoint
-        self.y = yPoint
+        self.x.append(xPoint)
+        self.y.append(yPoint)
         
         

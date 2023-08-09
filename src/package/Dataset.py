@@ -54,10 +54,14 @@ class Dataset:
                 self.tf = self.origin
                 self.type = 'TF'
                 self.parse_from_expression()
-            else:
+            elif isinstance(self.origin, Line):
                 self.type = 'line'
                 self.line = self.origin
                 self.parse_from_line()
+            elif isinstance(self.origin, Point):
+                self.type = 'pt'
+                self.point = self.origin
+                self.parse_from_point()
         else:
             raise ValueError
         
@@ -204,7 +208,7 @@ class Dataset:
         dl = Dataline(self, name=name, casenum=casenum, color='#303030', xsource=self.suggestedXsource, ysource=self.suggestedYsource)
         dl.xscale = self.suggestedXscale
         dl.yscale = self.suggestedYscale
-        if(self.type == 'csv' or self.type == 'spice'):
+        if(self.type == 'csv' or self.type == 'spice' or self.type == 'pt'):
             dl.linestyle = 'None'
             dl.markerstyle = 'Point'
         self.datalines.append(dl)

@@ -188,13 +188,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def resolveLineDialog(self):
         # Detect info to add a line to graph.
         self.ld.setLine()
-        ds = Dataset(filepath='', origin=self.ld.l, title=self.ld.getTitle())
+        nashe = self.ld.getTitle() + ".line"
+        ds = Dataset(filepath='', origin=self.ld.l, title=self.ld.getTitle() + ".line")
         self.addDataset(ds)
         
     def resolvePointDialog(self):
         # Detect info to add a point to graph.
-        self.ld.setLine()
-        ds = Dataset(filepath='', origin=self.ld.l, title=self.ld.getTitle())
+        self.ld.setPoint()
+        ds = Dataset(filepath='', origin=self.ld.p, title=self.ld.getTitle() + ".pt")
         self.addDataset(ds)
 
     def addDataset(self, ds):

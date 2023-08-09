@@ -850,7 +850,7 @@
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>-159</y>
+                <y>-126</y>
                 <width>200</width>
                 <height>430</height>
                </rect>
@@ -1247,7 +1247,7 @@
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_5">
                   <item>
-                   <widget class="QPushButton" name="addLine">
+                   <widget class="QPushButton" name="addLineOrPoint">
                     <property name="text">
                      <string>Add line or point</string>
                     </property>

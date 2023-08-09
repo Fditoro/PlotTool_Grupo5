@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import csv
 from src.package.transfer_function import TFunction
+from src.package.function import Function
 from src.package.Filter import AnalogFilter
 from collections import defaultdict
 from PyQt5.QtCore import QFileInfo
@@ -24,6 +25,7 @@ class Dataset:
         self.tf = TFunction()
         self.line = Line()
         self.point = Point()
+        self.f = Function()
         self.title = qfi.fileName() if title == '' else title
         self.text = self.title
         self.datalines = []
@@ -54,6 +56,10 @@ class Dataset:
                 self.tf = self.origin
                 self.type = 'TF'
                 self.parse_from_expression()
+            elif isinstance(self.origin, Function):
+                self.f = self.origin
+                self.type = 'function'
+                self.parse_from_function_expression()
             elif isinstance(self.origin, Line):
                 self.type = 'line'
                 self.line = self.origin
@@ -152,6 +158,13 @@ class Dataset:
                     if(chnum in self.data[0]):
                         self.suggestedYsource = chnum
             csv_file.close()
+
+    def parse_from_expression(self):
+        self.data = [{}]
+        self.data[0]['x'] = self.f.x
+        self.data[0]['y'] = self.f.y
+        self.suggestedXsource = 'x'
+        self.suggestedYsource = 'y'
 
     def parse_from_expression(self):
         f, g, ph, gd = self.tf.getBode()

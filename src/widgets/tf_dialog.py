@@ -5,16 +5,19 @@ from PyQt5 import QtWidgets
 # Project modules
 from src.ui.tf_window import Ui_tf_window
 from src.package.transfer_function import TFunction
+from src.package.function import Function
 
 class TFDialog(QtWidgets.QDialog, Ui_tf_window):
     def __init__(self, parent=None):
         super().__init__()
         self.setupUi(self)
         self.tf = TFunction()
+        self.f = Function()
 
         self.tf_title.textChanged.connect(self.enableTFFunction)
         self.tf_raw.textChanged.connect(self.drawExpression)
         self.check_btn.clicked.connect(self.processTFValues)
+        self.chck_t_func.clicked.connect(self.processFValues)
 
     def getTFTitle(self):
         return self.tf_title.text()
@@ -50,3 +53,15 @@ class TFDialog(QtWidgets.QDialog, Ui_tf_window):
             self.error_label.clear()
         else:
             self.error_label.setText("Revise function expression")
+
+    def validateF(self):
+        return self.f.setExpression(self.t_exp.text())
+
+    def processFValues(self):
+        if  self.validateF():
+            self.t_error_label.clear()
+        else:
+            self.t_error_label.setText("Revise function expression")
+
+    def setFValues(self):
+        self.f.setXY(self.tMin.value(), self.tMax.value(), 10 ** (-6 + 3 * self.scale.current()))

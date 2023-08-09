@@ -12,18 +12,21 @@ class Function():
         self.x = []
         self.y = []
         self.expression = 0
-        
     
-    def setXY(self, expresion, xmin, xmax):
+    def setExpression(self, expresion, normalize=False):
         try:
             x = sym.symbols('x')
             expression = sym.sympify(expresion)
             expression_function = sym.lambdify(x, expression, 'numpy')
-            
-            x_values = np.linspace(xmin, xmax, 10000)
-            self.y = expression_function(x_values)
-            self.x = x_values
+            self.expression = expression_function
+            return True
         except sym.SympifyError as e:
-            print("SympifyError:", e)
+            return False
         except Exception as e:
-            print("An error occurred:", e)
+            return False
+    
+    def setXY(self, xmin, xmax, scale):           
+        x_values = np.linspace(xmin * scale, xmax * scale, 10000)
+        self.y = self.expression(x_values)
+        self.x = x_values
+        

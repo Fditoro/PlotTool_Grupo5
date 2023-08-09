@@ -121,7 +121,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.tfd = TFDialog()
         self.function_btn.clicked.connect(self.openTFDialog)
-        self.tfd.accepted.connect(self.resolveTFDialog)
+        self.tfd.accepted_tf.clicked.connect(self.resolveTFDialog)
+        self.tfd.accepted_f.clicked.connect(self.resolveFDialog)
 
         self.csd = CaseDialog()
         self.ds_caseadd_btn.clicked.connect(self.openCaseDialog)
@@ -325,6 +326,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
         ds = Dataset(filepath='', origin=self.tfd.tf, title=self.tfd.getTFTitle())
         self.addDataset(ds)
+
+    def resolveFDialog(self):
+        if not self.tfd.validateF():
+            return
+        self.tfd.setFValues()
+        ds = Dataset(filepath='', origin= self.tfd.f, title=self.tfd.getFTitle())
+        self.addDataset(ds)
+            
 
     def openResponseDialog(self):
         self.respd.open()

@@ -22,6 +22,9 @@ class TFDialog(QtWidgets.QDialog, Ui_tf_window):
     def getTFTitle(self):
         return self.tf_title.text()
 
+    def getFTitle(self):
+        return self.tf_title.text()
+
     def getTFExpression(self):
         return self.tf_raw.text()
 

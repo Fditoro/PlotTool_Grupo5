@@ -15,14 +15,14 @@ class Function():
     
     def setExpression(self, expresion, normalize=False):
         try:
-            x = sym.symbols('x')
+            t = sym.symbols('t')
             expression = sym.sympify(expresion)
-            expression_function = sym.lambdify(x, expression, 'numpy')
+            expression_function = sym.lambdify(t, expression, 'numpy')
             self.expression = expression_function
             return True
-        except sym.SympifyError as e:
+        except sym.SympifyError:
             return False
-        except Exception as e:
+        except Exception:
             return False
     
     def setXY(self, xmin, xmax, scale):           

@@ -159,7 +159,7 @@ class Dataset:
                         self.suggestedYsource = chnum
             csv_file.close()
 
-    def parse_from_expression(self):
+    def parse_from_function_expression(self):
         self.data = [{}]
         self.data[0]['x'] = self.f.x
         self.data[0]['y'] = self.f.y

@@ -179,6 +179,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.prevFilterType = Filter.LOW_PASS
         self.compareapprox_cb.setCurrentIndexes([])
+        
+        self.pointCount = 0
 
     def showlineGeneratorWidget(self):
         if self.ld:
@@ -197,6 +199,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Detect info to add a point to graph.
         self.ld.setPoint()
         ds = Dataset(filepath='', origin=self.ld.p, title=self.ld.getTitle() + ".pt")
+        self.addDataset(ds)
+        
+        
+    #Function used to draw a point by clicking on canvas
+    def drawPoint(self, x, y):
+        #Changes the lineGenerator dialog as if you were drawing a point from there
+        self.ld.pointX.setValue(x)
+        self.ld.pointY.setValue(y)
+        self.ld.setPoint()
+        ds = Dataset(filepath='', origin=self.ld.p, title= "Point" + str(self.pointCount))
+        self.pointCount += 1
         self.addDataset(ds)
 
     def addDataset(self, ds):

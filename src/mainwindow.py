@@ -2,6 +2,8 @@
 from math import inf
 from PyQt5.QtWidgets import QMainWindow, QListWidgetItem, QColorDialog, QFileDialog, QDialog, QStyle
 from PyQt5.QtCore import Qt
+from matplotlib.backend_bases import key_press_handler
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 # Project modules
 from src.ui.mainwindow import Ui_MainWindow
@@ -114,6 +116,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.addLineOrPoint.clicked.connect(self.showlineGeneratorWidget)
         self.ld.createButton.clicked.connect(self.resolveLineDialog)
         self.ld.createPointButton.clicked.connect(self.resolvePointDialog)
+        
+        #Draw points by hand.        
+        self.drawPointButton.clicked.connect(self.resolveDrawPointButton)
+        self.drawLineButton.clicked.connect(self.resolveDrawLineButton)
+        self.event_detection_enabled = False
+        self.event_detection_enabled_line = 0
+
 
         self.respd = ResponseDialog()
         self.resp_btn.clicked.connect(self.openResponseDialog)
@@ -181,6 +190,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.compareapprox_cb.setCurrentIndexes([])
         
         self.pointCount = 0
+        self.lineCount = 0
 
     def showlineGeneratorWidget(self):
         if self.ld:
@@ -201,7 +211,72 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ds = Dataset(filepath='', origin=self.ld.p, title=self.ld.getTitle() + ".pt")
         self.addDataset(ds)
         
+    
+    # Click event on canvas handler for drawing points.
+    def on_mpl_widget_clicked(self, event):
+        if not self.event_detection_enabled:
+            return
         
+        if event.button == 1:  # Verifies if the left mouse button has been clicked
+            x = event.xdata  
+            y = event.ydata
+            
+            self.drawPoint(x,y)
+            
+            self.addDataline()
+            
+            self.event_detection_enabled = False
+            self.setCursor(Qt.ArrowCursor)
+    
+    
+    # Click event on canvas handler for drawing lines
+    def on_mpl_widget_clicked_line(self, event):
+        if self.event_detection_enabled_line == 0:
+            return
+        
+        if event.button == 1 and self.event_detection_enabled_line == 2:
+            x = event.xdata  
+            y = event.ydata
+            self.ld.secondPointX.setValue(x)
+            self.ld.seconPointY.setValue(y)
+            self.event_detection_enabled_line = 0
+            
+            self.drawLine()
+            
+            self.addDataline()
+            
+            self.setCursor(Qt.ArrowCursor)
+        
+        if event.button == 1 and self.event_detection_enabled_line == 1:  # Verifies if the left mouse button has been clicked
+            x = event.xdata  
+            y = event.ydata
+            self.ld.firstPointX.setValue(x)
+            self.ld.firstPointY.setValue(y)
+            self.event_detection_enabled_line = 2
+            
+    
+    
+    #Allows and disallows canvases to be clicked to draw points.
+    def resolveDrawPointButton(self):
+        if self.event_detection_enabled == False:
+            for canvas_group in self.plots_canvases:
+                for canvas in canvas_group:
+                    canvas.canvas.mpl_connect('button_press_event', self.on_mpl_widget_clicked)
+            self.setCursor(Qt.CrossCursor)
+        
+            self.event_detection_enabled = True
+    
+
+    #Allows and disallows canvases to be clicked to draw lines.
+    def resolveDrawLineButton(self):
+        if self.event_detection_enabled_line == 0:
+            for canvas_group in self.plots_canvases:
+                for canvas in canvas_group:
+                    canvas.canvas.mpl_connect('button_press_event', self.on_mpl_widget_clicked_line)
+            self.setCursor(Qt.CrossCursor)
+            self.event_detection_enabled_line = 1
+    
+    
     #Function used to draw a point by clicking on canvas
     def drawPoint(self, x, y):
         #Changes the lineGenerator dialog as if you were drawing a point from there
@@ -211,6 +286,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ds = Dataset(filepath='', origin=self.ld.p, title= "Point" + str(self.pointCount))
         self.pointCount += 1
         self.addDataset(ds)
+        
+        
+    def drawLine(self):
+        #Changes the lineGenerator dialog as if you were drawing a line from there
+        self.ld.setLine()
+        ds = Dataset(filepath='', origin=self.ld.l, title= "Line" + str(self.lineCount))
+        self.lineCount += 1
+        self.addDataset(ds)
+    
+    
 
     def addDataset(self, ds):
         qlwt = QListWidgetItem()

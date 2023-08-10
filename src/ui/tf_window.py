@@ -14,9 +14,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_tf_window(object):
     def setupUi(self, tf_window):
         tf_window.setObjectName("tf_window")
-        tf_window.resize(600, 500)
-        tf_window.setMinimumSize(QtCore.QSize(500, 460))
-        tf_window.setMaximumSize(QtCore.QSize(600, 500))
+        tf_window.resize(600, 550)
+        tf_window.setMinimumSize(QtCore.QSize(500, 510))
+        tf_window.setMaximumSize(QtCore.QSize(600, 550))
         self.formLayout = QtWidgets.QFormLayout(tf_window)
         self.formLayout.setObjectName("formLayout")
         self.tabWidget = QtWidgets.QTabWidget(tf_window)
@@ -25,8 +25,8 @@ class Ui_tf_window(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.tabWidget.sizePolicy().hasHeightForWidth())
         self.tabWidget.setSizePolicy(sizePolicy)
-        self.tabWidget.setMinimumSize(QtCore.QSize(490, 450))
-        self.tabWidget.setMaximumSize(QtCore.QSize(16777215, 500))
+        self.tabWidget.setMinimumSize(QtCore.QSize(490, 500))
+        self.tabWidget.setMaximumSize(QtCore.QSize(16777215, 650))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.tabWidget.setFont(font)
@@ -204,7 +204,7 @@ class Ui_tf_window(object):
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.SpanningRole, self.tabWidget)
 
         self.retranslateUi(tf_window)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(tf_window)
 
     def retranslateUi(self, tf_window):

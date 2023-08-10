@@ -15,7 +15,7 @@ class Dataline():
         self.linestyle = 'Solid'
         self.linewidth = 1
         self.markerstyle = 'None'
-        self.markersize = 4
+        self.markersize = 10
         self.savgolwindow = 1
         self.savgolord = 0
         self.casenum = casenum

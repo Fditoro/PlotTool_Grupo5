@@ -11,14 +11,10 @@ class Function():
         
         self.x = []
         self.y = []
-        self.expression = 0
     
-    def setExpression(self, expresion, normalize=False):
+    def setExpression(self, expression, normalize=False):
         try:
-            t = sym.symbols('t')
-            expression = sym.sympify(expresion)
-            expression_function = sym.lambdify(t, expression, 'numpy')
-            self.expression = expression_function
+            self.eparser.setTxt(expression)
             return True
         except sym.SympifyError:
             return False
@@ -27,6 +23,6 @@ class Function():
     
     def setXY(self, xmin, xmax, scale):           
         x_values = np.linspace(xmin * scale, xmax * scale, 10000)
-        self.y = self.expression(x_values)
+        self.y = self.eparser.evaluate_function(x_values)
         self.x = x_values
         

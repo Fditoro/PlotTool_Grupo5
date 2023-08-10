@@ -2,6 +2,7 @@ import sympy as sym
 from sympy import Symbol, S, oo
 
 s = sym.symbols('s')
+t = sym.symbols('t')
 
 #Puntaje asignado a la complejidad para la simplificación de sympy
 def determinar_complejidad(expr):
@@ -45,6 +46,9 @@ class ExprParser():
       N = sym.Poly(self.fractionEx[0]).all_coeffs() if (s in self.fractionEx[0].free_symbols) else [self.fractionEx[0].evalf()]
       D = sym.Poly(self.fractionEx[1]).all_coeffs() if (s in self.fractionEx[1].free_symbols) else [self.fractionEx[1].evalf()]
       return N, D
+    
+    def evaluate_function(self, x_array):
+        return [self.symEx.subs(t, x).evalf() for x in x_array]
 
     def getLatex(self):
       return sym.latex(sym.parsing.sympy_parser.parse_expr(self.txt, transformations = 'all'))

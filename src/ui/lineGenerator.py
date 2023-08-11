@@ -267,7 +267,7 @@ class Ui_lineGeneratorWidget(object):
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.SpanningRole, self.groupBox)
 
         self.retranslateUi(lineGeneratorWidget)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(lineGeneratorWidget)
 
     def retranslateUi(self, lineGeneratorWidget):
@@ -279,7 +279,7 @@ class Ui_lineGeneratorWidget(object):
         self.createButton.setText(_translate("lineGeneratorWidget", "Create"))
         self.cancelButton.setText(_translate("lineGeneratorWidget", "Cancel"))
         self.lineGen_xLabel_2.setText(_translate("lineGeneratorWidget", "x"))
-        self.label_2.setText(_translate("lineGeneratorWidget", "TextLabel"))
+        self.label_2.setText(_translate("lineGeneratorWidget", "Second point"))
         self.label_3.setText(_translate("lineGeneratorWidget", "To draw a line, \n"
 "define the two end points."))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.TwoPointLine), _translate("lineGeneratorWidget", "Two Point Line"))

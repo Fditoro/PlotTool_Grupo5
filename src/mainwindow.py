@@ -1,6 +1,6 @@
 # PyQt5 modules
 from math import inf
-from PyQt5.QtWidgets import QMainWindow, QListWidgetItem, QColorDialog, QFileDialog, QDialog, QStyle, QApplication
+from PyQt5.QtWidgets import QMainWindow, QListWidgetItem, QColorDialog, QFileDialog, QDialog, QStyle, QApplication, QPlainTextEdit
 from PyQt5.QtCore import Qt
 from matplotlib.backend_bases import key_press_handler
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -17,6 +17,7 @@ from src.widgets.case_window import CaseDialog
 from src.widgets.zp_window import ZPWindow
 from src.widgets.response_dialog import ResponseDialog
 from src.widgets.prompt_dialog import PromptDialog
+from src.widgets.textDialog import TextDialog
 
 from scipy.signal import savgol_filter
 import scipy.signal as signal
@@ -124,7 +125,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.drawLineButton.clicked.connect(self.resolveDrawLineButton)
         self.event_detection_enabled = False
         self.event_detection_enabled_line = 0
-
+        
+        #Add text
+        self.textDialog = TextDialog(self)
+        self.addText.clicked.connect(self.showTextWidget)
+        self.textDialog.updateButton.clicked.connect(self.updateTexts)
+        #self.textDialog.closeButton.clicked.connect(self.textDialog.hide())
 
         self.respd = ResponseDialog()
         self.resp_btn.clicked.connect(self.openResponseDialog)
@@ -193,6 +199,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         self.pointCount = 0
         self.lineCount = 0
+
+    def showTextWidget(self):
+        if self.textDialog:
+            self.textDialog.show()
+        else:
+            self.ld = TextDialog(self)
+
 
     def showlineGeneratorWidget(self):
         if self.ld:
@@ -872,7 +885,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if(self.selected_dataset_data.type == 'filter'):
             self.populateSelectedFilterDetails()
 
-    
     def populateSelectedFilterDetails(self, index=-2):
         pass
 
@@ -1128,6 +1140,48 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 canvas.draw()
             except ParseSyntaxException or ValueError:
                 pass
+
+
+    #Updates and plots texts.
+    def updateTexts(self):
+        currentTextList = self.textDialog.textList.currentItem()
+        currentTextIndex = self.textDialog.textList.row(currentTextList) # Detect the row of selected text.
+        currentText = self.textDialog.textListArray[currentTextIndex]
+        
+        currentText.title = self.textDialog.textTitle.text()
+        currentTextList.setText(currentText.title)
+        currentText.x = self.textDialog.xValueText.value()
+        currentText.y = self.textDialog.yValueText.value()
+        currentText.text = self.textDialog.text.toPlainText()
+        #currentText.color = 
+        currentText.size = self.textDialog.fontSize.value()
+        currentText.ha = self.textDialog.HA.currentText()
+        currentText.va = self.textDialog.VA.currentText()
+        currentText.rotation = self.textDialog.textRotation.value()
+        currentText.weight = self.textDialog.fontWeight.currentText()
+        currentText.style = self.textDialog.style.currentText()
+        currentText.opacity = self.textDialog.opacity.value() / 100
+        
+        #Add to canvas
+        self.saveFile(True)
+        processedCanvas = [x.canvas for x in self.plots_canvases[self.tabbing_plots.currentIndex()]]
+        
+        # if currentText.plotted == True:
+        #     for selectedCanvas in processedCanvas:
+        #         indexCanvas = self.getPlotFromIndex(currentText.plotNum).canvas
+        #         if (indexCanvas == selectedCanvas):
+        #             currentText.textObject.remove()
+        
+        currentText.plotNum = self.textDialog.plotSelector.currentIndex()
+        for selectedCanvas in processedCanvas:
+            indexCanvas = self.getPlotFromIndex(currentText.plotNum).canvas
+            if (indexCanvas == selectedCanvas):  
+                currentText.textObject = selectedCanvas.ax.text(currentText.x, currentText.y, currentText.text, ha=currentText.ha, va=currentText.va, rotation=currentText.rotation, fontsize=currentText.size, fontweight=currentText.weight, style=currentText.style, alpha=currentText.opacity)
+                selectedCanvas.draw()
+        
+        currentText.plotted = True
+        
+
 
     def derivate(self, x, y):
 

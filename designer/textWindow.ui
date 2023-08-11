@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>578</width>
-    <height>416</height>
+    <height>580</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -27,6 +27,12 @@
   <layout class="QFormLayout" name="formLayout_2">
    <item row="0" column="0">
     <widget class="QFrame" name="frame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="font">
       <font>
        <pointsize>12</pointsize>
@@ -40,10 +46,17 @@
      </property>
      <layout class="QFormLayout" name="formLayout">
       <item row="1" column="0">
-       <widget class="QListWidget" name="listWidget"/>
+       <widget class="QListWidget" name="textList">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="addTextButton">
         <property name="minimumSize">
          <size>
           <width>30</width>
@@ -66,11 +79,63 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QPushButton" name="removeButton">
+        <property name="text">
+         <string>Remove</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QComboBox" name="plotSelector">
+        <item>
+         <property name="text">
+          <string>Plot 1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Plot 2.1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Plot 2.2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Plot 3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Plot 4.1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Plot 4.2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Plot 5</string>
+         </property>
+        </item>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
    <item row="0" column="1">
     <widget class="QScrollArea" name="scrollArea">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>400</height>
+      </size>
+     </property>
      <property name="widgetResizable">
       <bool>true</bool>
      </property>
@@ -80,7 +145,7 @@
         <x>0</x>
         <y>0</y>
         <width>286</width>
-        <height>278</height>
+        <height>398</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -98,20 +163,13 @@
          </property>
          <layout class="QFormLayout" name="formLayout_3">
           <item row="0" column="0">
-           <widget class="QCheckBox" name="checkBox">
-            <property name="text">
-             <string>Latex format</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QPlainTextEdit" name="plainTextEdit">
+           <widget class="QPlainTextEdit" name="text">
             <property name="placeholderText">
              <string>Insert text to show here.</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="0" colspan="2">
+          <item row="1" column="0" colspan="2">
            <widget class="QFrame" name="frame_2">
             <property name="minimumSize">
              <size>
@@ -134,7 +192,7 @@
               </widget>
              </item>
              <item row="0" column="1">
-              <widget class="QLineEdit" name="lineEdit">
+              <widget class="QLineEdit" name="colorValue">
                <property name="inputMask">
                 <string/>
                </property>
@@ -144,9 +202,103 @@
               </widget>
              </item>
              <item row="0" column="2">
-              <widget class="QPushButton" name="pushButton_2">
+              <widget class="QPushButton" name="pickColorButton">
                <property name="text">
                 <string>Pick</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <widget class="QFrame" name="frame_3">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_3">
+             <item row="0" column="1">
+              <widget class="QDoubleSpinBox" name="xValueText">
+               <property name="minimumSize">
+                <size>
+                 <width>200</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>90</height>
+                </size>
+               </property>
+               <property name="decimals">
+                <number>5</number>
+               </property>
+               <property name="minimum">
+                <double>-1000000.000000000000000</double>
+               </property>
+               <property name="maximum">
+                <double>1000000.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_8">
+               <property name="text">
+                <string>x</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="2">
+           <widget class="QFrame" name="frame_4">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_4">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_10">
+               <property name="text">
+                <string>y</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QDoubleSpinBox" name="yValueText">
+               <property name="minimumSize">
+                <size>
+                 <width>200</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="decimals">
+                <number>5</number>
+               </property>
+               <property name="minimum">
+                <double>-1000000.000000000000000</double>
+               </property>
+               <property name="maximum">
+                <double>1000000.000000000000000</double>
                </property>
               </widget>
              </item>
@@ -167,20 +319,20 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="2" column="4">
-       <widget class="QComboBox" name="comboBox_4">
+       <widget class="QComboBox" name="style">
         <item>
          <property name="text">
-          <string>Normal</string>
+          <string>normal</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Italic</string>
+          <string>italic</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Oblique</string>
+          <string>oblique</string>
          </property>
         </item>
        </widget>
@@ -196,7 +348,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+       <widget class="QDoubleSpinBox" name="opacity">
         <property name="maximum">
          <double>100.000000000000000</double>
         </property>
@@ -246,7 +398,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QSpinBox" name="spinBox">
+       <widget class="QSpinBox" name="fontSize">
         <property name="minimum">
          <number>1</number>
         </property>
@@ -266,42 +418,42 @@
        </widget>
       </item>
       <item row="1" column="4">
-       <widget class="QComboBox" name="comboBox_2">
+       <widget class="QComboBox" name="VA">
         <item>
          <property name="text">
-          <string>Center</string>
+          <string>center</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Top</string>
+          <string>top</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Bottom</string>
+          <string>bottom</string>
          </property>
         </item>
        </widget>
       </item>
       <item row="0" column="4">
-       <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
+       <widget class="QDoubleSpinBox" name="textRotation"/>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="comboBox">
+       <widget class="QComboBox" name="HA">
         <item>
          <property name="text">
-          <string>Center</string>
+          <string>center</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Left</string>
+          <string>left</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Right</string>
+          <string>right</string>
          </property>
         </item>
        </widget>
@@ -317,22 +469,29 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QComboBox" name="comboBox_3">
+       <widget class="QComboBox" name="fontWeight">
         <item>
          <property name="text">
-          <string>Normal</string>
+          <string>normal</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Bold</string>
+          <string>bold</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Heavy</string>
+          <string>heavy</string>
          </property>
         </item>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
        </widget>
       </item>
       <item row="0" column="2">
@@ -342,8 +501,8 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
-       <widget class="Line" name="line_2">
+      <item row="3" column="2">
+       <widget class="Line" name="line_4">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
@@ -356,10 +515,17 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="2">
-       <widget class="Line" name="line_4">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
+      <item row="3" column="3">
+       <widget class="QPushButton" name="updateButton">
+        <property name="text">
+         <string>Update</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="4">
+       <widget class="QPushButton" name="closeButton">
+        <property name="text">
+         <string>Close</string>
         </property>
        </widget>
       </item>

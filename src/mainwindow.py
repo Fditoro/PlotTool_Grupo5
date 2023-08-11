@@ -80,6 +80,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.selected_dataset_data = {}
         self.selected_dataline_data = {}
         self.zpWindow = type('ZPWindow', (), {})()
+
+        self.dl_type_flag = 0
         
         self.import_file_btn.clicked.connect(self.importFiles)
         
@@ -266,7 +268,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
             self.event_detection_enabled = True
     
-
     #Allows and disallows canvases to be clicked to draw lines.
     def resolveDrawLineButton(self):
         if self.event_detection_enabled_line == 0:
@@ -275,7 +276,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     canvas.canvas.mpl_connect('button_press_event', self.on_mpl_widget_clicked_line)
             self.setCursor(Qt.CrossCursor)
             self.event_detection_enabled_line = 1
-    
     
     #Function used to draw a point by clicking on canvas
     def drawPoint(self, x, y):
@@ -286,8 +286,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ds = Dataset(filepath='', origin=self.ld.p, title= "Point" + str(self.pointCount))
         self.pointCount += 1
         self.addDataset(ds)
-        
-        
+          
     def drawLine(self):
         #Changes the lineGenerator dialog as if you were drawing a line from there
         self.ld.setLine()
@@ -295,8 +294,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.lineCount += 1
         self.addDataset(ds)
     
-    
-
     def addDataset(self, ds):
         qlwt = QListWidgetItem()
         qlwt.setData(Qt.UserRole, ds)
@@ -901,7 +898,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.dl_savgol_ord.blockSignals(True)
 
         self.selected_dataline_widget = listitemwidget
-        self.selected_dataline_data = listitemwidget.data(Qt.UserRole)
+        self.selected_dataline_data = listitemwidget.data(Qt.UserRole) #de aca
+        dl_type = self.selected_dataline_data.dataset.type
+
+        self.dl_transform_cb.clear()
+        if (dl_type == 'function'):
+            self.dl_type_flag = 1
+            opciones = ["None", "1st derivate", "2nd derivate"]
+        elif (dl_type == 'line' or dl_type == 'pt'):
+            self.dl_type_flag = 2
+            opciones =  ["None"]
+        else:
+            self.dl_type_flag = 0
+            opciones = ["None", "|.|", "Arg(.)", "unwrap Arg(.)", "20log(.)", "20log(|.|)", "unwrap(.)", "d/dx"]
+        
+        self.dl_transform_cb.addItems(opciones)
+
         self.dl_name_edit.setText(self.selected_dataline_widget.text())
         self.dl_render_cb.setCurrentIndex(self.selected_dataline_data.plots)
         
@@ -1044,19 +1056,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                         x, y = ds.get_datapoints(dl.xsource, dl.ysource, dl.casenum)
 
-                        if(dl.transform == 1):
-                            y = np.abs(y)
-                        elif(dl.transform == 2):
-                            y = np.angle(y, deg=True)
-                        elif(dl.transform == 3):
-                            y = np.unwrap(np.angle(y, deg=True), period=360)
-                        elif(dl.transform == 4):
-                            y = 20 * np.log10(y)
-                        elif(dl.transform == 5):
-                            y = 20 * np.log10(np.abs(y))
-                        elif(dl.transform == 6):
-                            y = np.unwrap(y, period=360)
-                        else:
+                        if(self.dl_type_flag == 0):
+                            if(dl.transform == 1):
+                                y = np.abs(y)
+                            elif(dl.transform == 2):
+                                y = np.angle(y, deg=True)
+                            elif(dl.transform == 3):
+                                y = np.unwrap(np.angle(y, deg=True), period=360)
+                            elif(dl.transform == 4):
+                                y = 20 * np.log10(y)
+                            elif(dl.transform == 5):
+                                y = 20 * np.log10(np.abs(y))
+                            elif(dl.transform == 6):
+                                y = np.unwrap(y, period=360)
+                            elif(dl.transform == 7):
+                                y = self.derivate(x, y)
+                            else:
+                                y = np.real(y)
+                        elif(self.dl_type_flag == 1):
+                            if(dl.transform == 1):
+                                x, y = self.derivate(x, y)
+                            elif(dl.transform == 2):
+                                x, y = self.derivate(x, y)
+                                x, y = self.derivate(x, y)
+                            else:
+                                y = np.real(y)
+                        elif(self.dl_type_flag == 2):
                             y = np.real(y)
 
                         if(dl.transform in [2,3,6]):
@@ -1100,6 +1125,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 canvas.draw()
             except ParseSyntaxException or ValueError:
                 pass
+
+    def derivate(self, x, y):
+
+        dy = np.array([], dtype=np.float64)
+        d = 0
+        for i in range(x.shape[0]-1):
+            d = np.float32((y[i+1] - y[i]) / (x[i+1] - x[i]))
+            dy = np.append(dy, d)
+        dx = x[:-1]
+
+        return dx, dy
 
     def showZPWindow(self):
         zeros = self.selected_dataset_data.zeros[0]

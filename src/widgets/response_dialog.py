@@ -5,6 +5,8 @@ from PyQt5 import QtWidgets
 # Project modules
 from src.ui.response_window import Ui_ResponseDialog
 
+import sympy as sym
+import numpy as np
 import ast
 import scipy.signal as signal
 

@@ -1,6 +1,6 @@
 # PyQt5 modules
 from math import inf
-from PyQt5.QtWidgets import QMainWindow, QListWidgetItem, QColorDialog, QFileDialog, QDialog, QStyle
+from PyQt5.QtWidgets import QMainWindow, QListWidgetItem, QColorDialog, QFileDialog, QDialog, QStyle, QApplication
 from PyQt5.QtCore import Qt
 from matplotlib.backend_bases import key_press_handler
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -423,11 +423,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.addDataset(ds)
 
     def resolveFDialog(self):
+        self.tfd.t_error_label.setText("Generating... Please wait")
+        QApplication.processEvents()
         if not self.tfd.validateF():
             return
         self.tfd.setFValues()
         ds = Dataset(filepath='', origin= self.tfd.f, title=self.tfd.getFTitle())
         self.addDataset(ds)
+        self.tfd.t_error_label.setText("Done!")
             
 
     def openResponseDialog(self):

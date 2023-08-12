@@ -21,7 +21,7 @@ class TextDialog(QWidget, Ui_Dialog):
         self.textCount = 0
         
         self.addTextButton.clicked.connect(self.addNewText)
-        self.removeButton.clicked.connect(self.removeText)
+        self.errorMsgTxtDialog.setVisible(False)
         
     #Adds new text to list
     def addNewText(self):
@@ -29,9 +29,5 @@ class TextDialog(QWidget, Ui_Dialog):
         self.textListArray.append(newText)  # Store new text
         self.textList.addItem("Label " + str(self.textCount)) # Show new text
         self.textCount += 1
+        self.updateButton.setEnabled(True)
     
-    def removeText(self):
-        listPositionText = self.textList.currentItem()
-        elementToRemove = self.textList.row(listPositionText)
-        del self.textListArray[elementToRemove]
-        self.textList.takeItem(elementToRemove)

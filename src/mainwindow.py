@@ -130,6 +130,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.textDialog = TextDialog(self)
         self.addText.clicked.connect(self.showTextWidget)
         self.textDialog.updateButton.clicked.connect(self.updateTexts)
+        self.textDialog.removeButton.clicked.connect(self.removeText)
+        self.textDialog.pickColorButton.clicked.connect(self.openColorPickerText)
+        self.textDialog.textList.itemClicked.connect(self.updateTextDialog)
         #self.textDialog.closeButton.clicked.connect(self.textDialog.hide())
 
         self.respd = ResponseDialog()
@@ -988,7 +991,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.updatePlots()
 
     
-    def openColorPicker(self):
+    def openColorPicker(self, origin):
         dialog = QColorDialog(self)
         dialog.setCurrentColor(Qt.red)
         dialog.setOption(QColorDialog.ShowAlphaChannel)
@@ -1144,43 +1147,119 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     #Updates and plots texts.
     def updateTexts(self):
-        currentTextList = self.textDialog.textList.currentItem()
-        currentTextIndex = self.textDialog.textList.row(currentTextList) # Detect the row of selected text.
-        currentText = self.textDialog.textListArray[currentTextIndex]
+        if self.textDialog.textList.count() and self.textDialog.textList.selectedItems():
+            self.textDialog.errorMsgTxtDialog.setVisible(False)
+            currentTextList = self.textDialog.textList.currentItem()
+            currentTextIndex = self.textDialog.textList.row(currentTextList) # Detect the row of selected text.
+            currentText = self.textDialog.textListArray[currentTextIndex]
+            
+            currentText.title = self.textDialog.textTitle.text()
+            if currentText.title: # Set title only if not empty
+                currentTextList.setText(currentText.title) 
+            currentText.x = self.textDialog.xValueText.value()
+            currentText.y = self.textDialog.yValueText.value()
+            currentText.text = self.textDialog.text.toPlainText()
+            #currentText.color = 
+            currentText.size = self.textDialog.fontSize.value()
+            currentText.ha = self.textDialog.HA.currentText()
+            currentText.va = self.textDialog.VA.currentText()
+            currentText.rotation = self.textDialog.textRotation.value()
+            currentText.weight = self.textDialog.fontWeight.currentText()
+            currentText.style = self.textDialog.style.currentText()
+            currentText.opacity = self.textDialog.opacity.value() / 100
+            
+            #Add to canvas
+            self.saveFile(True)
+            
+            processedCanvas = []
+            for i in self.plots_canvases:   # Process all canvas to an easy format to handle.
+                for j in i:
+                    processedCanvas.append(j.canvas)
+            
+            if currentText.plotted == True: # Delete the previous instance of this text if there was one.
+                currentText.textObject.remove()
+                processedCanvas[currentText.plotNum].draw()
+            
+            # Plot text
+            currentText.plotNum = self.textDialog.plotSelector.currentIndex()
+            selectedCanvas = processedCanvas[currentText.plotNum]
+
+            currentText.textObject = selectedCanvas.ax.text(currentText.x, currentText.y, currentText.text, ha=currentText.ha, va=currentText.va, rotation=currentText.rotation, fontsize=currentText.size, fontweight=currentText.weight, style=currentText.style, alpha=currentText.opacity, color=currentText.color)
+            selectedCanvas.draw()
+            
+            currentText.plotted = True
+            
+        else:
+            self.textDialog.errorMsgTxtDialog.setVisible(True)
         
-        currentText.title = self.textDialog.textTitle.text()
-        currentTextList.setText(currentText.title)
-        currentText.x = self.textDialog.xValueText.value()
-        currentText.y = self.textDialog.yValueText.value()
-        currentText.text = self.textDialog.text.toPlainText()
-        #currentText.color = 
-        currentText.size = self.textDialog.fontSize.value()
-        currentText.ha = self.textDialog.HA.currentText()
-        currentText.va = self.textDialog.VA.currentText()
-        currentText.rotation = self.textDialog.textRotation.value()
-        currentText.weight = self.textDialog.fontWeight.currentText()
-        currentText.style = self.textDialog.style.currentText()
-        currentText.opacity = self.textDialog.opacity.value() / 100
+
+    # Removes selected text in text dialog
+    def removeText(self):
+        if self.textDialog.textList.count() and self.textDialog.textList.selectedItems():
+            currentTextList = self.textDialog.textList.currentItem()
+            currentTextIndex = self.textDialog.textList.row(currentTextList) # Detect the row of selected text.
+            currentText = self.textDialog.textListArray[currentTextIndex]
+
+            self.saveFile(True)
+            
+            processedCanvas = []
+            for i in self.plots_canvases:   # Process all canvas to an easy format to handle.
+                for j in i:
+                    processedCanvas.append(j.canvas)
+            
+            if currentText.plotted == True: # Delete the previous instance of this text if there was one.
+                currentText.textObject.remove()
+                processedCanvas[currentText.plotNum].draw()
+            
+            # Deletes text from list.
+            listPositionText = self.textDialog.textList.currentItem() 
+            elementToRemove = self.textDialog.textList.row(listPositionText)
+            del self.textDialog.textListArray[elementToRemove]
+            self.textDialog.textList.takeItem(elementToRemove)
+            self.updateTextDialog()
+            
+            
+            if self.textDialog.textList.count() == 0:
+                self.updateButton.setEnabled(False)
+
+    #Edit color text
+    def openColorPickerText(self, origin):
+        dialog = QColorDialog(self)
+        dialog.setCurrentColor(Qt.red)
+        dialog.setOption(QColorDialog.ShowAlphaChannel)
+        dialog.open()
+        dialog.currentColorChanged.connect(self.updateTextColor)
+
+    def updateTextColor(self, color):
+        self.textDialog.colorValue.setText(color.name())
+        self.textDialog.colorLabel.setStyleSheet(f'background-color: {color.name()}')
+        if self.textDialog.textList.count() and self.textDialog.textList.selectedItems():
+            currentTextList = self.textDialog.textList.currentItem()
+            currentTextIndex = self.textDialog.textList.row(currentTextList) # Detect the row of selected text.
+            currentText = self.textDialog.textListArray[currentTextIndex]
+            currentText.color = color.name()
         
-        #Add to canvas
-        self.saveFile(True)
-        processedCanvas = [x.canvas for x in self.plots_canvases[self.tabbing_plots.currentIndex()]]
-        
-        # if currentText.plotted == True:
-        #     for selectedCanvas in processedCanvas:
-        #         indexCanvas = self.getPlotFromIndex(currentText.plotNum).canvas
-        #         if (indexCanvas == selectedCanvas):
-        #             currentText.textObject.remove()
-        
-        currentText.plotNum = self.textDialog.plotSelector.currentIndex()
-        for selectedCanvas in processedCanvas:
-            indexCanvas = self.getPlotFromIndex(currentText.plotNum).canvas
-            if (indexCanvas == selectedCanvas):  
-                currentText.textObject = selectedCanvas.ax.text(currentText.x, currentText.y, currentText.text, ha=currentText.ha, va=currentText.va, rotation=currentText.rotation, fontsize=currentText.size, fontweight=currentText.weight, style=currentText.style, alpha=currentText.opacity)
-                selectedCanvas.draw()
-        
-        currentText.plotted = True
-        
+    # Updates the text dialog to match the properties of the selected text    
+    def updateTextDialog(self):
+        if self.textDialog.textList.count() and self.textDialog.textList.selectedItems():
+            currentTextList = self.textDialog.textList.currentItem()
+            currentTextIndex = self.textDialog.textList.row(currentTextList) # Detect the row of selected text.
+            currentText = self.textDialog.textListArray[currentTextIndex]
+
+            if currentText.plotted == True:
+                self.textDialog.textTitle.setText(currentText.title)
+                self.textDialog.xValueText.setValue(currentText.x)
+                self.textDialog.yValueText.setValue(currentText.y)
+                self.textDialog.text.setPlainText(currentText.text)
+                self.textDialog.fontSize.setValue(currentText.size)
+                self.textDialog.HA.setCurrentText(currentText.ha)
+                self.textDialog.VA.setCurrentText(currentText.va)
+                self.textDialog.textRotation.setValue(currentText.rotation)
+                self.textDialog.fontWeight.setCurrentText(currentText.weight)
+                self.textDialog.style.setCurrentText(currentText.style)
+                self.textDialog.opacity.setValue(currentText.opacity * 100)
+                self.textDialog.colorValue.setText(currentText.color)
+                self.textDialog.colorLabel.setStyleSheet(f'background-color: {currentText.color}')
 
 
     def derivate(self, x, y):

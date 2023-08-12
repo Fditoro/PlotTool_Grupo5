@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>578</width>
-    <height>580</height>
+    <width>750</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -15,6 +15,12 @@
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>750</width>
+    <height>700</height>
+   </size>
   </property>
   <property name="font">
    <font>
@@ -125,6 +131,19 @@
         </item>
        </widget>
       </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QLabel" name="errorMsgTxtDialog">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Select a text to update!</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -144,7 +163,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>286</width>
+        <width>458</width>
         <height>398</height>
        </rect>
       </property>
@@ -158,17 +177,16 @@
        </item>
        <item>
         <widget class="QGroupBox" name="groupBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="title">
           <string>Text</string>
          </property>
          <layout class="QFormLayout" name="formLayout_3">
-          <item row="0" column="0">
-           <widget class="QPlainTextEdit" name="text">
-            <property name="placeholderText">
-             <string>Insert text to show here.</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="0" colspan="2">
            <widget class="QFrame" name="frame_2">
             <property name="minimumSize">
@@ -185,7 +203,7 @@
             </property>
             <layout class="QGridLayout" name="gridLayout_2">
              <item row="0" column="0">
-              <widget class="QLabel" name="label_9">
+              <widget class="QLabel" name="colorLabel">
                <property name="text">
                 <string>Color</string>
                </property>
@@ -230,7 +248,7 @@
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>200</width>
+                 <width>16777215</width>
                  <height>90</height>
                 </size>
                </property>
@@ -287,7 +305,7 @@
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>200</width>
+                 <width>16777215</width>
                  <height>16777215</height>
                 </size>
                </property>
@@ -305,6 +323,13 @@
             </layout>
            </widget>
           </item>
+          <item row="0" column="0" colspan="2">
+           <widget class="QPlainTextEdit" name="text">
+            <property name="placeholderText">
+             <string>Insert text to show here.</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -314,6 +339,12 @@
    </item>
    <item row="1" column="0" colspan="2">
     <widget class="QGroupBox" name="groupBox_2">
+     <property name="minimumSize">
+      <size>
+       <width>700</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="title">
       <string>Text configuration:</string>
      </property>
@@ -517,6 +548,9 @@
       </item>
       <item row="3" column="3">
        <widget class="QPushButton" name="updateButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>Update</string>
         </property>

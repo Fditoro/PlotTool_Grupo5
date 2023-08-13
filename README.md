@@ -1,13 +1,14 @@
 # PlotTool_Grupo5 
 
-## Implementaciones
+## Mejoras implementadas
 ### Puntos y rectas
 
-Se incorporó una nueva opción con la cual el usuario podrá graficar puntos y líneas rectas en los distintos plots, estas presentan distintas opciones de diseño como tamaño y color.
+Se incorporó una nueva opción que permite al usuario graficar puntos y líneas rectas en los distintos plots para realizar anotaciones sobre un gráfico. Esta herramienta es muy util para casos en los que se desea marcar un valor de tensión pico, por ejemplo.
+El programa permite ingresar puntos y lineas ya sea ingresando las coordenadas en una pestaña al seleccionar el boton "Add line or point" o bien clickeando sobre la pantalla donde se desea colocar un punto o una linea al seleccionar el botón "Draw line" o "Draw point". Estas lineas y puntos presentan distintas opciones de diseño como tamaño y color.
 
 ### Texto
 
-Se añadió la posibilidad de agregar texto a los plots. Esta herramienta es compatible con código latex, a su vez presenta diversas configuraciones como tamaño de letra y color.
+Se añadió la posibilidad de agregar texto a los plots. Esta herramienta es compatible con código Latex (si se escribe una exprsión entre $$ se interpretará como una ecuación de Latex), a su vez presenta diversas configuraciones como tamaño de letra y color.
 
 ### Funciones
 

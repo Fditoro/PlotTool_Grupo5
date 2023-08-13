@@ -12,5 +12,5 @@ Se añadió la posibilidad de agregar texto a los plots. Esta herramienta es com
 ### Funciones
 
 Junto a la opción de crear funciones de transferencia, se encuentra una nueva herramienta la cual permite al usuario graficar funciones a través de expresiones matemáticas. Estas funciones mantienen las diversas opciones de diseño que el resto de datalines, tales como, tamaño, estilo de línea y color, a su vez incorporan nuevas transformaciones:
-derivada de primer orden
-derivada de segundo orden
+- derivada de primer orden
+- derivada de segundo orden

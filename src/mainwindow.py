@@ -133,7 +133,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.textDialog.removeButton.clicked.connect(self.removeText)
         self.textDialog.pickColorButton.clicked.connect(self.openColorPickerText)
         self.textDialog.textList.itemClicked.connect(self.updateTextDialog)
-        #self.textDialog.closeButton.clicked.connect(self.textDialog.hide())
+        self.textDialog.closeButton.clicked.connect(self.closeTextDialog)
 
         self.respd = ResponseDialog()
         self.resp_btn.clicked.connect(self.openResponseDialog)
@@ -1218,8 +1218,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             
             
             if self.textDialog.textList.count() == 0:
-                self.updateButton.setEnabled(False)
+                self.textDialog.updateButton.setEnabled(False)
 
+    
+    def closeTextDialog(self):
+        self.textDialog.hide()
+    
     #Edit color text
     def openColorPickerText(self, origin):
         dialog = QColorDialog(self)
@@ -1243,7 +1247,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             currentTextList = self.textDialog.textList.currentItem()
             currentTextIndex = self.textDialog.textList.row(currentTextList) # Detect the row of selected text.
             currentText = self.textDialog.textListArray[currentTextIndex]
-
+            self.textDialog.updateButton.setEnabled(True)
             if currentText.plotted == True:
                 self.textDialog.textTitle.setText(currentText.title)
                 self.textDialog.xValueText.setValue(currentText.x)

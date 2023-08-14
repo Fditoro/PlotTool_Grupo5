@@ -928,7 +928,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             opciones =  ["None"]
         else:
             self.dl_type_flag = 0
-            opciones = ["None", "|.|", "Arg(.)", "unwrap Arg(.)", "20log(.)", "20log(|.|)", "unwrap(.)", "d/dx"]
+            opciones = ["None", "|.|", "Arg(.)", "unwrap Arg(.)", "20log(.)", "20log(|.|)", "unwrap(.)"]
         
         self.dl_transform_cb.addItems(opciones)
 
@@ -1087,8 +1087,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 y = 20 * np.log10(np.abs(y))
                             elif(dl.transform == 6):
                                 y = np.unwrap(y, period=360)
-                            elif(dl.transform == 7):
-                                y = self.derivate(x, y)
                             else:
                                 y = np.real(y)
                         elif(self.dl_type_flag == 1):

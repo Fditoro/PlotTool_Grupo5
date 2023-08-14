@@ -1309,7 +1309,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 'marginx': self.plt_marginx.value(),
                 'marginy': self.plt_marginy.value()      
             }
-            d = [self.datasets, self.datalines, plots_data, general_config]
+            texts = [self.textDialog.textList.item(i).text() for i in range(self.textDialog.textList.count())]
+            d = [self.datasets, self.datalines, plots_data, general_config, self.textDialog.textListArray, texts]
             pickle.dump(d, f, pickle.HIGHEST_PROTOCOL)
 
     def loadFile(self):
@@ -1317,7 +1318,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if(not filename): return
         with open(filename, 'rb') as f:
             f.seek(0)
-            self.datasets, self.datalines, plotdata, general_config = pickle.load(f)            
+            self.datasets, self.datalines, plotdata, general_config, textListArray, textList = pickle.load(f)
+            for t in textListArray:
+                self.textDialog.textListArray.append(t)    
+            for t in textList:
+                item = QListWidgetItem(t)
+                self.textDialog.textList.addItem(item)      
             self.plt_labelsize_sb.setValue(general_config['labelsize_sb'])
             self.plt_legendsize_sb.setValue(general_config['legendsize_sb'])
             self.plt_ticksize_sb.setValue(general_config['ticksize_sb'])
@@ -1357,6 +1363,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.updatePlots()
         self.updateSelectedDataline()
         self.updateFilterParametersAvailable()
+        self.updateTexts()
     
     def getRelevantFrequencies(self, zeros, poles):
         singularitiesNorm = np.append(np.abs(zeros), np.abs(poles))

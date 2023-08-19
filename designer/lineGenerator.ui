@@ -148,13 +148,13 @@
           </size>
          </property>
          <property name="decimals">
-          <number>5</number>
+          <number>9</number>
          </property>
          <property name="minimum">
-          <double>-1000000.000000000000000</double>
+          <double>-1000000000000000.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>1000000.000000000000000</double>
+          <double>1000000000000000.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -173,13 +173,13 @@
           </size>
          </property>
          <property name="decimals">
-          <number>5</number>
+          <number>9</number>
          </property>
          <property name="minimum">
-          <double>-1000000.000000000000000</double>
+          <double>-1000000000000000.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>1000000.000000000000000</double>
+          <double>1000000000000000.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -198,13 +198,13 @@
           </size>
          </property>
          <property name="decimals">
-          <number>5</number>
+          <number>9</number>
          </property>
          <property name="minimum">
-          <double>-1000000.000000000000000</double>
+          <double>-1000000000000000.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>1000000.000000000000000</double>
+          <double>1000000000000000.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -403,13 +403,13 @@
           </size>
          </property>
          <property name="decimals">
-          <number>5</number>
+          <number>9</number>
          </property>
          <property name="minimum">
-          <double>-1000000.000000000000000</double>
+          <double>-1000000000.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>1000000.000000000000000</double>
+          <double>1000000000000000.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -446,13 +446,13 @@ define the two end points.</string>
           </size>
          </property>
          <property name="decimals">
-          <number>5</number>
+          <number>9</number>
          </property>
          <property name="minimum">
-          <double>-1000000.000000000000000</double>
+          <double>-1000000000000000.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>1000000.000000000000000</double>
+          <double>1000000000000000.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -471,13 +471,13 @@ define the two end points.</string>
           </size>
          </property>
          <property name="decimals">
-          <number>5</number>
+          <number>9</number>
          </property>
          <property name="minimum">
-          <double>-1000000.000000000000000</double>
+          <double>-1000000000000000.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>1000000.000000000000000</double>
+          <double>1000000000000000.000000000000000</double>
          </property>
         </widget>
        </item>
